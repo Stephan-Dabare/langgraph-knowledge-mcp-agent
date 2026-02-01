@@ -51,7 +51,23 @@ class ToolErrorHandlerMiddleware(AgentMiddleware):
 
         try:
             result = handler(request)
-            print(f"✅ Tool {tool_name} completed", flush=True)
+
+            # Show retrieved content preview (limited to first 500 chars)
+            if isinstance(result, ToolMessage):
+                content_str = str(result.content)
+                content_length = len(content_str)
+                preview_length = 500
+
+                if content_length > preview_length:
+                    preview = content_str[:preview_length] + "..."
+                    print(f"✅ Tool {tool_name} completed (Retrieved {content_length} chars)", flush=True)
+                    print(f"📄 Content preview:\n{preview}\n", flush=True)
+                else:
+                    print(f"✅ Tool {tool_name} completed (Retrieved {content_length} chars)", flush=True)
+                    print(f"📄 Content:\n{content_str}\n", flush=True)
+            else:
+                print(f"✅ Tool {tool_name} completed", flush=True)
+
             return result
         except ToolException as e:
             print(f"⚠️ Tool {tool_name} returned an error: {str(e)}", flush=True)
@@ -84,7 +100,23 @@ class ToolErrorHandlerMiddleware(AgentMiddleware):
 
         try:
             result = await handler(request)
-            print(f"✅ Tool {tool_name} completed", flush=True)
+
+            # Show retrieved content preview (limited to first 500 chars)
+            if isinstance(result, ToolMessage):
+                content_str = str(result.content)
+                content_length = len(content_str)
+                preview_length = 500
+
+                if content_length > preview_length:
+                    preview = content_str[:preview_length] + "..."
+                    print(f"✅ Tool {tool_name} completed (Retrieved {content_length} chars)", flush=True)
+                    print(f"📄 Content preview:\n{preview}\n", flush=True)
+                else:
+                    print(f"✅ Tool {tool_name} completed (Retrieved {content_length} chars)", flush=True)
+                    print(f"📄 Content:\n{content_str}\n", flush=True)
+            else:
+                print(f"✅ Tool {tool_name} completed", flush=True)
+
             return result
         except ToolException as e:
             print(f"⚠️ Tool {tool_name} returned an error: {str(e)}", flush=True)
