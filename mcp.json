@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "langchain-docs": {
+      "transport": "streamable_http",
+      "url": "https://docs.langchain.com/mcp"
+    }
+  }
+}
